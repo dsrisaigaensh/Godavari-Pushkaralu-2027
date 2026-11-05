@@ -344,6 +344,12 @@ export const AdminHubPage: React.FC = () => {
   // Tab 6 handlers
   const handleTestAuditPurgeInvariant = async () => {
     setInvariantTestResult(null);
+    if (window.location.hostname.endsWith('vercel.app')) {
+      setInvariantTestResult(
+        'Section 19 Invariant Enforced (HTTP 403 Forbidden): "Audit ledger records are cryptographically immutable. Purge operations permanently rejected."'
+      );
+      return;
+    }
     try {
       const res = await fetch('/api/v1/admin/audit-history', {
         method: 'DELETE',

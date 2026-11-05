@@ -130,22 +130,22 @@ export const ProjectListPage: React.FC = () => {
   };
 
   const handleExportCsv = () => {
-    const token = api.getToken();
-    // Open authenticated CSV export
-    fetch(api.exportProjectsCsvUrl(), {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    })
-      .then((res) => res.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `CivicProof_Projects_${new Date().toISOString().slice(0, 10)}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      })
-      .catch((err) => alert('CSV Export failed: ' + err.message));
+    const csvContent =
+      'Project ID,Project Name,Category,Zone,Status,Progress (Verified)\n' +
+      projects
+        .map(
+          (p) =>
+            `"${p.project_identifier}","${p.name}","${p.category}","${p.zone_name || p.zone_id || 'All'}","${p.current_status}","${p.verified_progress_avg}%"`
+        )
+        .join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `CivicProof_Projects_${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   };
 
   return (

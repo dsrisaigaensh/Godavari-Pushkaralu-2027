@@ -1,7 +1,7 @@
-// CivicProof Platform - Field PWA Service Worker
+// CivicProof Platform - Field PWA Service Worker (v2)
 // Enables offline-first resilience for riverfront field verification at Godavari Pushkaralu 2027
 
-const CACHE_NAME = 'civicproof-shell-v1';
+const CACHE_NAME = 'civicproof-shell-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -12,14 +12,15 @@ const STATIC_ASSETS = [
 
 // Install: Pre-cache core application shell
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS);
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
-// Activate: Clean up older cache versions
+// Activate: Purge older cache versions and take immediate control
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -30,58 +31,59 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: Network-first for APIs, Cache-first / Stale-while-revalidate for static assets
+// Fetch: Pass-through for APIs, resilient fallback for navigation and static assets
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   const url = new URL(request.url);
 
-  // 1. API Requests: Network-first
+  // 1. Never intercept API requests - let the frontend ApiClient handle them with its mock fallback
   if (url.pathname.startsWith('/api/')) {
-    event.respondWith(
-      fetch(request.clone()).catch(() => {
-        return new Response(
-          JSON.stringify({
-            error: 'NetworkOffline',
-            message: 'Device is offline.',
-            offline: true
-          }),
-          {
-            status: 503,
-            statusText: 'Service Unavailable',
-            headers: { 'Content-Type': 'application/json' }
-          }
-        );
-      })
-    );
     return;
   }
 
-  // 2. Navigation Requests: Network with cache fallback to /index.html
+  // 2. Navigation Requests: Network first, cache fallback, guaranteed Response
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request).catch(async () => {
-        const cache = await caches.open(CACHE_NAME);
-        return (await cache.match('/index.html')) || (await cache.match('/'));
+        try {
+          const cache = await caches.open(CACHE_NAME);
+          const cached = (await cache.match('/index.html')) || (await cache.match('/'));
+          if (cached) return cached;
+        } catch {
+          // ignore cache error
+        }
+        return new Response('<!doctype html><html><head><meta http-equiv="refresh" content="2"></head><body>Loading CivicProof...</body></html>', {
+          status: 200,
+          headers: { 'Content-Type': 'text/html' }
+        });
       })
     );
     return;
   }
 
-  // 3. Static Assets: Stale-While-Revalidate
+  // 3. Static Assets: Cache first with network refresh, guaranteed Response
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      const fetchPromise = fetch(request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseToCache);
-          });
+    caches.match(request).then(async (cachedResponse) => {
+      if (cachedResponse) {
+        // Fetch in background to revalidate cache
+        fetch(request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, networkResponse));
+          }
+        }).catch(() => {});
+        return cachedResponse;
+      }
+
+      try {
+        const networkResponse = await fetch(request);
+        if (networkResponse && networkResponse.status === 200) {
+          const toCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, toCache));
         }
         return networkResponse;
-      }).catch(() => cachedResponse);
-
-      return cachedResponse || fetchPromise;
+      } catch {
+        return new Response('', { status: 404, statusText: 'Not Found' });
+      }
     })
   );
 });
-

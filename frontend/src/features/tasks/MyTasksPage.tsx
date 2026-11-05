@@ -18,6 +18,7 @@ import { api } from '../../services/api';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../i18n/LanguageContext';
 import type {
   MyTaskItem,
   MyTasksResponse
@@ -26,6 +27,7 @@ import type {
 export const MyTasksPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [taskData, setTaskData] = useState<MyTasksResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -156,7 +158,7 @@ export const MyTasksPage: React.FC = () => {
               </span>
             </div>
             <h1 className="text-xl md:text-2xl font-bold font-serif tracking-tight">
-              My Tasks & Personal Action Queue
+              {t('My Tasks & Action Queue', 'My Tasks & Personal Action Queue')}
             </h1>
             <p className="text-xs text-amber-100 max-w-2xl mt-1 leading-relaxed">
               Consolidated real-time assignments: inspections to execute, defect corrective actions to verify, contractor progress submissions awaiting review, and critical path milestones.

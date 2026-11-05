@@ -15,9 +15,11 @@ import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Modal } from '../../components/ui/Modal';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const UsersPage: React.FC = () => {
   const { user: currentUser, hasPermission } = useAuth();
+  const { t } = useLanguage();
   const [users, setUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
@@ -134,11 +136,11 @@ export const UsersPage: React.FC = () => {
               <Users className="w-5 h-5" />
             </div>
             <h1 className="text-xl font-bold text-textPrimary tracking-tight">
-              User & Role Access Management
+              {t('User Management', 'User & Role Access Management')}
             </h1>
           </div>
           <p className="text-xs text-textSecondary mt-1">
-            Authoritative registry of municipal engineers, event officers, inspectors, and contractors.
+            {t('User Accounts & Security', 'Authoritative registry of municipal engineers, event officers, inspectors, and contractors.')}
           </p>
         </div>
         <div className="flex items-center gap-2">

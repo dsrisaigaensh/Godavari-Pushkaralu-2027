@@ -15,6 +15,7 @@ import { api } from '../../services/api';
 import { Badge, type BadgeVariant } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
+import { useLanguage } from '../../i18n/LanguageContext';
 import type {
   DependencyGraphResponse,
   DependencyGraphNode,
@@ -23,6 +24,7 @@ import type {
 } from '../../types/dependency';
 
 export const DependencyGraphPage: React.FC = () => {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState<boolean>(true);
   const [graph, setGraph] = useState<DependencyGraphResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -144,10 +146,10 @@ export const DependencyGraphPage: React.FC = () => {
               <span className="text-xs text-textSecondary font-medium">Critical Path Method (CPM) & DAG Cycle Protection</span>
             </div>
             <h1 className="text-2xl font-bold text-textPrimary tracking-tight">
-              Readiness Dependency Graph & Risk Engine
+              {t('Readiness Dependency Graph & Risk Engine', 'Readiness Dependency Graph & Risk Engine')}
             </h1>
             <p className="text-sm text-textSecondary mt-1 max-w-3xl">
-              Directed Acyclic Graph (DAG) modeling contractual milestone predecessors, critical path duration, and predictive delay ripple-effects for Pushkaralu 2027.
+              {t('Directed Acyclic Graph (DAG) modeling contractual milestone predecessors, critical path duration, and predictive delay ripple-effects for Pushkaralu 2027.', 'Directed Acyclic Graph (DAG) modeling contractual milestone predecessors, critical path duration, and predictive delay ripple-effects for Pushkaralu 2027.')}
             </p>
           </div>
 

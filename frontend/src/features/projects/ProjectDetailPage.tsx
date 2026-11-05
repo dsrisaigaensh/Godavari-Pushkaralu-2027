@@ -17,11 +17,13 @@ import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
 import { Modal } from '../../components/ui/Modal';
 import { ReadinessChainModal } from '../readiness/ReadinessChainModal';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { hasPermission } = useAuth();
+  const { t } = useLanguage();
 
   const [project, setProject] = useState<ProjectDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -232,7 +234,7 @@ export const ProjectDetailPage: React.FC = () => {
           onClick={() => navigate('/projects')}
           className="text-xs font-medium text-brand hover:underline inline-flex items-center gap-1"
         >
-          <ArrowLeft className="w-3.5 h-3.5" /> Back to Project Register
+          <ArrowLeft className="w-3.5 h-3.5" /> {t('nav_projects', 'Back to Project Register')}
         </button>
         <Badge variant="brand" size="sm">
           Pushkaralu 2027 Priority Work

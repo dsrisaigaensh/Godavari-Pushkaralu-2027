@@ -27,11 +27,13 @@ import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const VendorDashboardPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   const [dashboard, setDashboard] = useState<VendorDashboardData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -204,7 +206,7 @@ export const VendorDashboardPage: React.FC = () => {
           className="inline-flex items-center gap-2 text-xs font-medium text-slate-600 hover:text-brand transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Contractors Directory
+          {t('nav_contractors', 'Back to Contractors Directory')}
         </button>
 
         {canSubmit && (

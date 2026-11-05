@@ -191,16 +191,6 @@ export const AppLayout: React.FC = () => {
           {/* In-App Notification Center Dropdown */}
           <NotificationBellDropdown />
 
-          {/* Quick Role Switcher Shortcut (Desktop) */}
-          <button
-            onClick={() => setRoleSwitcherOpen(true)}
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-brand bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 rounded-lg transition-colors"
-            title="Switch Persona"
-          >
-            <ArrowRightLeft className="w-3.5 h-3.5 text-brand" />
-            <span>{t('switch_role', 'Switch Role')}</span>
-          </button>
-
           {/* Quick Role Switcher Button (Mobile icon only) */}
           <button
             onClick={() => setRoleSwitcherOpen(true)}

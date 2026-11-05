@@ -27,11 +27,13 @@ import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const InspectionDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user, hasPermission, hasRole } = useAuth();
+  const { t } = useLanguage();
 
   const [inspection, setInspection] = useState<Inspection | null>(null);
   const [loading, setLoading] = useState(true);
@@ -246,7 +248,7 @@ export const InspectionDetailPage: React.FC = () => {
           className="gap-1.5 text-xs text-slate-600 hover:text-slate-900 mb-3"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          Back to Inspections Registry
+          {t('nav_inspections', 'Back to Inspections Registry')}
         </Button>
 
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-xl border border-slate-200 shadow-xs">

@@ -17,6 +17,7 @@ import {
 import { api } from '../../services/api';
 import { Badge, type BadgeVariant } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
+import { useLanguage } from '../../i18n/LanguageContext';
 import type {
   MapFeature,
   MapFeatureCollection,
@@ -25,6 +26,7 @@ import type {
 } from '../../types/map';
 
 export const MapPage: React.FC = () => {
+  const { t } = useLanguage();
   const [loading, setLoading] = useState<boolean>(true);
   const [featureData, setFeatureData] = useState<MapFeatureCollection | null>(null);
   const [zones, setZones] = useState<ZoneGeoBoundary[]>([]);
@@ -363,10 +365,10 @@ export const MapPage: React.FC = () => {
               <span className="text-xs text-textSecondary font-medium">OpenStreetMap & Leaflet Zone Monitoring</span>
             </div>
             <h1 className="text-2xl font-bold text-textPrimary tracking-tight">
-              Geographic Map & Zone Monitoring
+              {t('Geographic Map & Zone Monitoring', 'Geographic Map & Zone Monitoring')}
             </h1>
             <p className="text-sm text-textSecondary mt-1 max-w-3xl">
-              Spatial tracking of Pushkaralu ghat works, municipal assets, field inspections, and safety hazard clusters along the River Godavari.
+              {t('Spatial tracking of Pushkaralu ghat works, municipal assets, field inspections, and safety hazard clusters along the River Godavari.', 'Spatial tracking of Pushkaralu ghat works, municipal assets, field inspections, and safety hazard clusters along the River Godavari.')}
             </p>
           </div>
 

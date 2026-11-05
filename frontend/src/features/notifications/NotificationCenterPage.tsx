@@ -16,6 +16,7 @@ import {
 import { api } from '../../services/api';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
+import { useLanguage } from '../../i18n/LanguageContext';
 import type {
   NotificationItem,
   ExternalChannelsStatusResponse
@@ -23,6 +24,7 @@ import type {
 
 export const NotificationCenterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
@@ -186,10 +188,10 @@ export const NotificationCenterPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-xl md:text-2xl font-bold font-serif text-[#4A120E] tracking-tight">
-                Notification Center
+                {t('Notifications', 'Notification Center')}
               </h1>
               <p className="text-xs text-stone-500">
-                Live stream of field verification events, defect escalations, and statutory alerts.
+                {t('Live stream of field verification events, defect escalations, and statutory alerts.')}
               </p>
             </div>
           </div>

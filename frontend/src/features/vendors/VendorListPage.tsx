@@ -21,10 +21,12 @@ import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
 import { useAuth } from '../../context/AuthContext';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const VendorListPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -126,10 +128,10 @@ export const VendorListPage: React.FC = () => {
           </div>
           <h1 className="text-2xl font-bold text-slate-900 tracking-tight mt-1 flex items-center gap-2">
             <Building2 className="w-7 h-7 text-brand" />
-            Contractor & Service-Provider Directory
+            {t('Contractors & Vendors', 'Contractor & Service-Provider Directory')}
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            Registered infrastructure vendors, statutory compliance status, and assigned public work packages.
+            {t('Vetted contractors, qualification statuses, active packages, and statutory compliance monitoring.', 'Registered infrastructure vendors, statutory compliance status, and assigned public work packages.')}
           </p>
         </div>
 
@@ -140,7 +142,7 @@ export const VendorListPage: React.FC = () => {
             onClick={() => setIsRegisterModalOpen(true)}
             icon={<Plus className="w-4 h-4" />}
           >
-            Register Contractor
+            {t('Register Contractor', 'Register Contractor')}
           </Button>
         )}
       </div>
@@ -149,25 +151,25 @@ export const VendorListPage: React.FC = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-card">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Contractors</span>
+            <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">{t('Total Contractors', 'Total Contractors')}</span>
             <Building2 className="w-4 h-4 text-brand" />
           </div>
           <p className="text-2xl font-bold text-slate-900 mt-2">{totalContractors}</p>
-          <span className="text-xs text-slate-500 mt-0.5 block">Vetted and empaneled</span>
+          <span className="text-xs text-slate-500 mt-0.5 block">{t('Vetted and empaneled', 'Vetted and empaneled')}</span>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-card">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">Active Work Packages</span>
+            <span className="text-xs font-medium text-slate-500 uppercase tracking-wider">{t('Active Work Packages', 'Active Work Packages')}</span>
             <Layers className="w-4 h-4 text-brand" />
           </div>
           <p className="text-2xl font-bold text-slate-900 mt-2">{activeContracts}</p>
-          <span className="text-xs text-slate-500 mt-0.5 block">Under execution on site</span>
+          <span className="text-xs text-slate-500 mt-0.5 block">{t('Under execution on site', 'Under execution on site')}</span>
         </div>
 
         <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-card">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-govSuccess uppercase tracking-wider">Compliant Vendors</span>
+            <span className="text-xs font-medium text-govSuccess uppercase tracking-wider">{t('Compliant Vendors', 'Compliant Vendors')}</span>
             <CheckCircle2 className="w-4 h-4 text-govSuccess" />
           </div>
           <p className="text-2xl font-bold text-govSuccess mt-2">{compliantCount}</p>

@@ -32,11 +32,13 @@ import { Modal } from '../../components/ui/Modal';
 import { useAuth } from '../../context/AuthContext';
 import { QRLabelModal } from './QRLabelModal';
 import { ReadinessChainModal } from '../readiness/ReadinessChainModal';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const AssetDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { hasPermission, hasRole } = useAuth();
+  const { t } = useLanguage();
 
   const [asset, setAsset] = useState<Asset | null>(null);
   const [loading, setLoading] = useState(true);
@@ -190,7 +192,7 @@ export const AssetDetailPage: React.FC = () => {
       <div className="space-y-4">
         <Button variant="secondary" onClick={() => navigate('/assets')} className="gap-2">
           <ArrowLeft className="w-4 h-4" />
-          Back to Asset Registry
+          {t('nav_assets', 'Back to Asset Registry')}
         </Button>
         <div className="p-6 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 space-y-2">
           <h3 className="font-bold text-base">Error Loading Asset</h3>
@@ -212,7 +214,7 @@ export const AssetDetailPage: React.FC = () => {
           className="gap-2 text-slate-600 hover:text-slate-900"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Asset Registry
+          {t('nav_assets', 'Back to Asset Registry')}
         </Button>
 
         <div className="flex items-center gap-2">

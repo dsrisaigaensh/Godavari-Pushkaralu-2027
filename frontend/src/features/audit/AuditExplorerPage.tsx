@@ -5,8 +5,10 @@ import type { AuditEvent } from '../../types/auth';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
 import { Modal } from '../../components/ui/Modal';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const AuditExplorerPage: React.FC = () => {
+  const { t } = useLanguage();
   const [events, setEvents] = useState<AuditEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,11 +60,11 @@ export const AuditExplorerPage: React.FC = () => {
               <History className="w-5 h-5 text-brand" />
             </div>
             <h1 className="text-xl font-bold text-textPrimary tracking-tight">
-              Immutable System Audit Explorer
+              {t('Audit Explorer', 'Immutable System Audit Explorer')}
             </h1>
           </div>
           <p className="text-xs text-textSecondary mt-1">
-            Tamper-evident append-only ledger tracking all authentication, user modifications, and operational events.
+            {t('Cryptographically chained audit events, immutable system ledger, and compliance inspection records.', 'Tamper-evident append-only ledger tracking all authentication, user modifications, and operational events.')}
           </p>
         </div>
         <div className="flex items-center gap-2">

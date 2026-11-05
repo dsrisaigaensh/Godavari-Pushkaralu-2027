@@ -35,19 +35,19 @@ self.addEventListener('fetch', (event) => {
   const request = event.request;
   const url = new URL(request.url);
 
-  // 1. API Requests: Network-first with offline error response
+  // 1. API Requests: Network-first
   if (url.pathname.startsWith('/api/')) {
     event.respondWith(
-      fetch(request).catch(() => {
+      fetch(request.clone()).catch(() => {
         return new Response(
           JSON.stringify({
             error: 'NetworkOffline',
-            message: 'Device is offline. Action has been persisted to local IndexedDB queue.',
+            message: 'Device is offline.',
             offline: true
           }),
           {
             status: 503,
-            statusText: 'Service Unavailable (Offline)',
+            statusText: 'Service Unavailable',
             headers: { 'Content-Type': 'application/json' }
           }
         );
